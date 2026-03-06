@@ -1,0 +1,38 @@
+<main class="container home-screen nes-container with-title is-rounded">
+  <p class="title">Pokedex GEA</p>
+
+  <section class="hero-pikachu">
+    <h1>Vamos capturar os pokemons!</h1>
+    <%= image_tag "pikachu-pokemon.gif", class: "pikachu-gif", alt: "Pikachu amarelo animado" %>
+  </section>
+
+  <% if notice.present? %>
+    <p class="flash flash-notice"><%= notice %></p>
+  <% end %>
+
+  <% if alert.present? %>
+    <p class="flash flash-alert"><%= alert %></p>
+  <% end %>
+
+  <%= form_with scope: :pokemon_import, url: pokemon_import_path, multipart: true, local: true, class: "nes-field" do |form| %>
+    <div class="field">
+      <%= form.label :file, "Arquivo CSV" %>
+      <%= form.file_field :file, accept: ".csv,text/csv", required: true, class: "nes-input" %>
+    </div>
+
+    <div class="submit-center">
+      <%= form.submit "Enviar CSV", class: "nes-btn is-warning" %>
+    </div>
+  <% end %><br>
+
+  <section class="help nes-container is-rounded with-title">
+    <p><%= link_to "Ver lista de Pokemons no Banco Writer", pokemons_path, class: "nes-text is-primary" %></p>
+    <p><%= link_to "Ir para Arena Pokemon", new_pokemon_battle_path, class: "nes-text is-error" %></p>
+    <p>
+      <%= link_to "Excluir todos os Pokemons",
+                  destroy_all_pokemons_path,
+                  data: { turbo_method: :delete, turbo_confirm: "Tem certeza que deseja excluir todos os pokemons?" },
+                  class: "nes-text is-error" %>
+    </p>
+  </section>
+</main>

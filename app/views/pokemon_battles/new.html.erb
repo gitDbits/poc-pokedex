@@ -1,0 +1,69 @@
+<main class="pokemon-index-layout">
+  <header class="page-header">
+    <h1>Arena Pokemon</h1>
+    <p>Escolha dois pokemons e clique em batalhar para definir um vencedor.</p>
+    <p>
+      <%= link_to "Voltar para importacao", new_pokemon_import_path %> |
+      <%= link_to "Ver lista de pokemons", pokemons_path %>
+    </p>
+  </header>
+
+  <% if alert.present? %>
+    <p class="flash flash-alert"><%= alert %></p>
+  <% end %>
+
+  <section class="battle-form-wrap">
+    <%= form_with url: pokemon_battle_path, method: :post, local: true do |form| %>
+      <div class="battle-grid">
+        <div>
+          <%= form.label :pokemon_1_id, "Pokemon 1" %>
+          <%= form.select :pokemon_1_id,
+                          options_from_collection_for_select(@pokemons, :id, :name, @selected_pokemon_1_id),
+                          { prompt: "Selecione" },
+                          { class: "battle-select" } %>
+        </div>
+
+        <div>
+          <%= form.label :pokemon_2_id, "Pokemon 2" %>
+          <%= form.select :pokemon_2_id,
+                          options_from_collection_for_select(@pokemons, :id, :name, @selected_pokemon_2_id),
+                          { prompt: "Selecione" },
+                          { class: "battle-select" } %>
+        </div>
+      </div>
+
+      <div class="submit-center">
+        <%= form.submit "Batalhar", class: "nes-btn is-error" %>
+      </div>
+    <% end %>
+  </section>
+
+  <% if @winner && @loser %>
+    <section class="battle-result nes-container is-rounded with-title">
+      <p class="title">Resultado</p>
+      <p>
+        Vencedor: <strong><%= @winner.name %></strong>
+      </p>
+
+      <div class="battle-cards">
+        <article class="battle-card">
+          <h3><%= @winner.name %></h3>
+          <% winner_sprite = pokemon_sprite_url(@winner) %>
+          <% if winner_sprite %>
+            <%= image_tag winner_sprite, alt: "Sprite de #{@winner.name}", class: "pokemon-sprite pokemon-sprite-battle" %>
+          <% end %>
+          <p>Total: <strong><%= @winner.total %></strong></p>
+        </article>
+
+        <article class="battle-card battle-card-loser">
+          <h3><%= @loser.name %></h3>
+          <% loser_sprite = pokemon_sprite_url(@loser) %>
+          <% if loser_sprite %>
+            <%= image_tag loser_sprite, alt: "Sprite de #{@loser.name}", class: "pokemon-sprite pokemon-sprite-battle" %>
+          <% end %>
+          <p>Total: <strong><%= @loser.total %></strong></p>
+        </article>
+      </div>
+    </section>
+  <% end %>
+</main>

@@ -1,0 +1,334 @@
+/*
+ * This is a manifest file that'll be compiled into application.css.
+ *
+ * With Propshaft, assets are served efficiently without preprocessing steps. You can still include
+ * application-wide styles in this file, but keep in mind that CSS precedence will follow the standard
+ * cascading order, meaning styles declared later in the document or manifest will override earlier ones,
+ * depending on specificity.
+ *
+ * Consider organizing styles into separate files for maintainability.
+ */
+
+:root {
+  --pika-yellow: #ffd84d;
+  --pika-yellow-soft: #fff0a8;
+  --pika-ink: #1f1f1f;
+}
+
+body {
+  margin: 0;
+  padding: 2rem;
+  background: linear-gradient(180deg, var(--pika-yellow-soft), #fffbe9 35%, #f7f7f9 100%);
+  color: var(--pika-ink);
+}
+
+.container {
+  max-width: 860px;
+  margin: 0 auto;
+}
+
+.pokemon-index-layout {
+  width: calc(100vw - 4rem);
+  max-width: calc(100vw - 4rem);
+  margin: 0;
+}
+
+.home-screen {
+  width: min(860px, 100%);
+  display: block;
+  float: none;
+  margin-inline: auto !important;
+  margin-block: 0;
+  background: #fffef8;
+  border-color: #1f1f1f;
+}
+
+.hero-pikachu {
+  margin-bottom: 1.6rem;
+  padding: 1rem;
+  text-align: center;
+  background: var(--pika-yellow);
+  border: 4px solid #1f1f1f;
+}
+
+.pikachu-gif {
+  width: min(100%, 320px);
+  height: auto;
+  image-rendering: pixelated;
+  border: 4px solid #1f1f1f;
+  background: #fff;
+}
+
+.field {
+  margin: 1rem 0;
+}
+
+.submit-center {
+  margin: 1rem 0 1.2rem;
+  text-align: center;
+}
+
+.flash {
+  padding: 0.7rem;
+  border-radius: 6px;
+}
+
+.flash-notice {
+  background: #e8f7e9;
+  color: #1a661e;
+}
+
+.flash-alert {
+  background: #fde8e8;
+  color: #8d1f1f;
+}
+
+.help {
+  margin-top: 1.2rem;
+}
+
+.page-header {
+  margin-bottom: 1rem;
+}
+
+.table-wrap {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+table {
+  width: 100%;
+  min-width: 0;
+  border-collapse: collapse;
+  font-size: 0.8rem;
+}
+
+th,
+td {
+  border: 1px solid #ddd;
+  padding: 0.25rem 0.35rem;
+  text-align: left;
+  white-space: nowrap;
+}
+
+th {
+  background: #f1f4f8;
+}
+
+.pixel-head-icon {
+  width: 10px;
+  height: 10px;
+  display: inline-block;
+  margin-right: 0.35rem;
+  vertical-align: -1px;
+  image-rendering: pixelated;
+}
+
+.icon-number { background: #5f6d7a; }
+.icon-image { background: #7f59ff; }
+.icon-name { background: #0a66c2; }
+.icon-type { background: #00a36c; }
+.icon-total { background: #7a4e1d; }
+.icon-hp { background: #d92d20; }
+.icon-attack { background: #f97316; }
+.icon-defense { background: #2d6cdf; }
+.icon-spatk { background: #fb8c00; }
+.icon-spdef { background: #4f46e5; }
+.icon-speed { background: #16a34a; }
+.icon-generation { background: #374151; }
+.icon-legendary { background: #d4a017; }
+
+.pokemon-sprite {
+  width: 56px;
+  height: 56px;
+  display: block;
+  image-rendering: pixelated;
+}
+
+.pokemon-sprite-list {
+  width: 96px;
+  height: 96px;
+}
+
+.pokemon-show-image {
+  margin: 0.6rem 0 1rem;
+}
+
+.pokemon-sprite-show {
+  width: 160px;
+  height: 160px;
+}
+
+.pokemon-sprite-battle {
+  width: 112px;
+  height: 112px;
+}
+
+.pokemon-details {
+  display: grid;
+  grid-template-columns: 180px 1fr;
+  gap: 0.4rem 0.8rem;
+}
+
+.pokemon-details dt {
+  font-weight: 700;
+}
+
+.pokemon-details dd {
+  margin: 0;
+}
+
+.pagination-header,
+.pagination-footer {
+  margin: 0.8rem 0;
+}
+
+.pagy {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  align-items: center;
+}
+
+.pagy a,
+.pagy span {
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 0.25rem 0.5rem;
+  text-decoration: none;
+  color: #222;
+}
+
+.pagy .active {
+  background: #0a66c2;
+  color: #fff;
+  border-color: #0a66c2;
+}
+
+.battle-form-wrap {
+  margin: 1rem 0;
+}
+
+.battle-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(220px, 1fr));
+  gap: 1rem;
+}
+
+.battle-grid label {
+  display: inline-block;
+  margin-bottom: 0.35rem;
+}
+
+.battle-select {
+  width: 100%;
+  min-height: 3rem;
+  padding: 0.55rem 0.75rem;
+  font-size: 0.9rem;
+}
+
+.battle-result {
+  margin-top: 1rem;
+  overflow-x: auto;
+}
+
+.battle-cards {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(180px, 1fr));
+  gap: 1rem;
+}
+
+.battle-card {
+  border: 2px solid #1f1f1f;
+  padding: 0.75rem;
+  background: #fffef8;
+}
+
+.battle-card-loser {
+  background: #d8d8d8;
+  border-color: #909090;
+  color: #525252;
+  filter: grayscale(100%);
+}
+
+.welcome-screen {
+  width: min(860px, 100%);
+  margin-inline: auto !important;
+  background: #fffef8;
+  border-color: #1f1f1f;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.welcome-hero {
+  width: min(640px, 100%);
+  margin: 0 auto 1.4rem;
+  padding: 1rem;
+  text-align: center;
+  background: var(--pika-yellow);
+  border: 4px solid #1f1f1f;
+}
+
+.services-section {
+  width: min(320px, 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.2rem;
+  text-align: center;
+  margin-inline: auto;
+}
+
+.services-subtitle {
+  margin: 0;
+}
+
+.pokedex-entry-card {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  background: #fff;
+  border: 0;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.pokedex-entry-card:hover {
+  transform: translateY(-2px);
+}
+
+.service-card-title {
+  margin: 0;
+  text-align: center;
+}
+
+.pokedex-entry-content {
+  display: grid;
+  gap: 1rem;
+  justify-items: center;
+  padding: 1rem 0.5rem 0.6rem;
+}
+
+.service-card-disabled {
+  background: #ececec;
+  color: #6a6a6a;
+  cursor: not-allowed;
+  opacity: 0.85;
+}
+
+.service-card-disabled .service-card-title {
+  text-decoration: line-through;
+}
+
+.service-card-status {
+  margin: 0;
+  font-size: 0.72rem;
+}
+
+@media (max-width: 720px) {
+  .battle-grid {
+    grid-template-columns: 1fr;
+  }
+}

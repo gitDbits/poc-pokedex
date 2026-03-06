@@ -1,0 +1,27 @@
+<main class="container welcome-screen nes-container with-title is-rounded">
+  <p class="title">Delphos</p>
+
+  <section class="welcome-hero">
+    <h1>Bem Vindo ao Delphos</h1>
+  </section>
+
+  <section class="services-section">
+    <p class="services-subtitle">Selecione um serviço</p>
+
+    <%= link_to pokedex_gea_path, class: "pokedex-entry-card" do %>
+      <p class="service-card-title">Pokedex GEA</p>
+      <div class="pokedex-entry-content">
+        <%= image_tag "pikachu-pokemon.gif", class: "pikachu-gif", alt: "Pikachu amarelo animado" %>
+        <p class="nes-text is-primary">Clique para entrar</p>
+      </div>
+    <% end %>
+
+    <article class="pokedex-entry-card service-card-disabled" aria-disabled="true">
+      <p class="service-card-title">O Incrível mundo das paçocas</p>
+      <div class="pokedex-entry-content">
+        <%= image_tag "pacoca.jpg", class: "pikachu-gif", alt: "Paçoca" %>
+        <p class="service-card-status">Em andamento</p>
+      </div>
+    </article>
+  </section>
+</main>

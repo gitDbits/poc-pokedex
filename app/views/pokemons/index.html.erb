@@ -1,0 +1,82 @@
+<main class="pokemon-index-layout">
+  <header class="page-header">
+    <h1>Lista de Pokemons (Writer)</h1>
+    <p>Esta tela consulta diretamente o banco writer da aplicacao.</p>
+    <p><%= link_to "Voltar para importacao", new_pokemon_import_path %> | <%= link_to "Arena Pokemon", new_pokemon_battle_path %></p>
+  </header>
+
+  <% if notice.present? %>
+    <p class="flash flash-notice"><%= notice %></p>
+  <% end %>
+
+  <% if alert.present? %>
+    <p class="flash flash-alert"><%= alert %></p>
+  <% end %>
+
+  <% if @pokemons.empty? %>
+    <p>Nenhum pokemon encontrado.</p>
+  <% else %>
+    <div class="pagination-header">
+      <p>
+        Pagina <strong><%= @pagy.page %></strong> de <strong><%= @pagy.pages %></strong> |
+        Total: <strong><%= @pagy.count %></strong> |
+        Itens por pagina: <strong><%= @pagy.limit %></strong>
+      </p>
+      <%== @pagy.series_nav %>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th><span class="pixel-head-icon icon-number" aria-hidden="true"></span>Nº</th>
+            <th><span class="pixel-head-icon icon-image" aria-hidden="true"></span>Imagem</th>
+            <th><span class="pixel-head-icon icon-name" aria-hidden="true"></span>Nome</th>
+            <th><span class="pixel-head-icon icon-type" aria-hidden="true"></span>Tipo 1</th>
+            <th><span class="pixel-head-icon icon-type" aria-hidden="true"></span>Tipo 2</th>
+            <th><span class="pixel-head-icon icon-total" aria-hidden="true"></span>Total</th>
+            <th><span class="pixel-head-icon icon-hp" aria-hidden="true"></span>HP</th>
+            <th><span class="pixel-head-icon icon-attack" aria-hidden="true"></span>Ataque</th>
+            <th><span class="pixel-head-icon icon-defense" aria-hidden="true"></span>Defesa</th>
+            <th><span class="pixel-head-icon icon-spatk" aria-hidden="true"></span>Atq. Esp.</th>
+            <th><span class="pixel-head-icon icon-spdef" aria-hidden="true"></span>Def. Esp.</th>
+            <th><span class="pixel-head-icon icon-speed" aria-hidden="true"></span>Velocidade</th>
+            <th><span class="pixel-head-icon icon-generation" aria-hidden="true"></span>Geracao</th>
+            <th><span class="pixel-head-icon icon-legendary" aria-hidden="true"></span>Lendario</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @pokemons.each do |pokemon| %>
+            <tr>
+              <td><%= pokemon.pokedex_number %></td>
+              <td>
+                <% sprite_url = pokemon_sprite_url(pokemon) %>
+                <% if sprite_url %>
+                  <%= image_tag sprite_url, alt: "Sprite de #{pokemon.name}", class: "pokemon-sprite pokemon-sprite-list", loading: "lazy" %>
+                <% else %>
+                  -
+                <% end %>
+              </td>
+              <td><%= link_to pokemon.name, pokemon_path(pokemon) %></td>
+              <td><%= pokemon_type_label(pokemon.type_1) %></td>
+              <td><%= pokemon_type_label(pokemon.type_2) %></td>
+              <td><%= pokemon.total %></td>
+              <td><%= pokemon.hp %></td>
+              <td><%= pokemon.attack %></td>
+              <td><%= pokemon.defense %></td>
+              <td><%= pokemon.sp_atk %></td>
+              <td><%= pokemon.sp_def %></td>
+              <td><%= pokemon.speed %></td>
+              <td><%= pokemon.generation %></td>
+              <td><%= pokemon_legendary_label(pokemon.legendary) %></td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="pagination-footer">
+      <%== @pagy.series_nav %>
+    </div>
+  <% end %>
+</main>

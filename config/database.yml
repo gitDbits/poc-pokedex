@@ -1,0 +1,17 @@
+development:
+  primary:
+    database: pokedex_development
+    adapter: postgresql
+    username: <%= ENV.fetch("POKEDEX_DB_WRITER_USER", "postgres") %>
+    password: <%= ENV.fetch("POKEDEX_DB_WRITER_PASSWORD", "postgres") %>
+    host: <%= ENV.fetch("POKEDEX_DB_WRITER_HOST", "localhost") %>
+    port: <%= ENV.fetch("POKEDEX_DB_WRITER_PORT", 5433) %>
+
+  primary_replica:
+    database: pokedex_development
+    adapter: postgresql
+    username: <%= ENV.fetch("POKEDEX_DB_REPLICA_USER", "postgres") %>
+    password: <%= ENV.fetch("POKEDEX_DB_REPLICA_PASSWORD", "postgres") %>
+    host: <%= ENV.fetch("POKEDEX_DB_REPLICA_HOST", "localhost") %>
+    port: <%= ENV.fetch("POKEDEX_DB_REPLICA_PORT", 5434) %>
+    replica: true

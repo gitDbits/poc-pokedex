@@ -1,0 +1,52 @@
+<main class="container">
+  <header class="page-header">
+    <h1><%= @pokemon.name %> (Replica)</h1>
+    <p>Detalhe consultado no banco reader/replica da aplicacao.</p>
+    <p><%= link_to "Voltar para lista (Writer)", pokemons_path %></p>
+  </header>
+
+  <% sprite_url = pokemon_sprite_url(@pokemon) %>
+  <% if sprite_url %>
+    <section class="pokemon-show-image">
+      <%= image_tag sprite_url, alt: "Sprite de #{@pokemon.name}", class: "pokemon-sprite pokemon-sprite-show" %>
+    </section>
+  <% end %>
+
+  <dl class="pokemon-details">
+    <dt>#</dt>
+    <dd><%= @pokemon.pokedex_number %></dd>
+
+    <dt>Type 1</dt>
+    <dd><%= @pokemon.type_1 %></dd>
+
+    <dt>Type 2</dt>
+    <dd><%= @pokemon.type_2.presence || "-" %></dd>
+
+    <dt>Total</dt>
+    <dd><%= @pokemon.total %></dd>
+
+    <dt>HP</dt>
+    <dd><%= @pokemon.hp %></dd>
+
+    <dt>Attack</dt>
+    <dd><%= @pokemon.attack %></dd>
+
+    <dt>Defense</dt>
+    <dd><%= @pokemon.defense %></dd>
+
+    <dt>Sp. Atk</dt>
+    <dd><%= @pokemon.sp_atk %></dd>
+
+    <dt>Sp. Def</dt>
+    <dd><%= @pokemon.sp_def %></dd>
+
+    <dt>Speed</dt>
+    <dd><%= @pokemon.speed %></dd>
+
+    <dt>Generation</dt>
+    <dd><%= @pokemon.generation %></dd>
+
+    <dt>Legendary</dt>
+    <dd><%= @pokemon.legendary %></dd>
+  </dl>
+</main>

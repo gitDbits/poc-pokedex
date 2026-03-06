@@ -1,0 +1,170 @@
+name: pokedex
+
+services:
+  rails:
+    image: pokedex-app-rails:dev
+    build:
+      context: .
+      dockerfile: Dockerfile.compose
+      args:
+        RUBY_VERSION: "4.0.1"
+    container_name: pokedex-app-rails
+    environment: &app_env
+      RAILS_ENV: development
+      REDIS_URL: ${REDIS_URL:-redis://pokedex-redis:6379/0}
+      POKEDEX_DB_WRITER_HOST: pokedex-postgres-writer
+      POKEDEX_DB_WRITER_PORT: 5432
+      POKEDEX_DB_WRITER_USER: postgres
+      POKEDEX_DB_WRITER_PASSWORD: postgres
+      POKEDEX_DB_REPLICA_HOST: pokedex-postgres-reader
+      POKEDEX_DB_REPLICA_PORT: 5432
+      POKEDEX_DB_REPLICA_USER: pokedex_reader
+      POKEDEX_DB_REPLICA_PASSWORD: pokedex_reader
+    command: ./bin/rails server -b 0.0.0.0 -p 3000
+    ports:
+      - "3000:3000"
+    depends_on:
+      pokedex-postgres-writer:
+        condition: service_healthy
+      pokedex-postgres-reader:
+        condition: service_healthy
+      pokedex-redis:
+        condition: service_healthy
+    volumes:
+      - .:/app
+      - bundle_cache:/usr/local/bundle
+
+  sidekiq:
+    image: pokedex-app-sidekiq:dev
+    build:
+      context: .
+      dockerfile: Dockerfile.compose
+      args:
+        RUBY_VERSION: "4.0.1"
+    container_name: pokedex-app-sidekiq
+    environment: *app_env
+    command: bundle exec sidekiq -C config/sidekiq.yml
+    depends_on:
+      pokedex-postgres-writer:
+        condition: service_healthy
+      pokedex-postgres-reader:
+        condition: service_healthy
+      pokedex-redis:
+        condition: service_healthy
+    volumes:
+      - .:/app
+      - bundle_cache:/usr/local/bundle
+
+  pokedex-redis:
+    image: redis:7
+    container_name: pokedex-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  metabase:
+    image: metabase/metabase:latest
+    container_name: pokedex-metabase
+    restart: unless-stopped
+    environment:
+      MB_DB_TYPE: postgres
+      MB_DB_DBNAME: metabase
+      MB_DB_PORT: 5432
+      MB_DB_USER: metabase
+      MB_DB_PASS: metabase
+      MB_DB_HOST: metabase-postgres
+    depends_on:
+      metabase-postgres:
+        condition: service_healthy
+    ports:
+      - "${METABASE_PORT:-3002}:3000"
+    volumes:
+      - metabase_data:/metabase-data
+
+  metabase-postgres:
+    image: postgres:18
+    container_name: pokedex-metabase-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: metabase
+      POSTGRES_PASSWORD: metabase
+      POSTGRES_DB: metabase
+    ports:
+      - "5435:5432"
+    volumes:
+      - metabase_postgres_data:/var/lib/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U metabase -d metabase"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  pokedex-postgres-writer:
+    image: postgres:18
+    container_name: pokedex-postgres-writer
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: pokedex_development
+      REPLICATION_USER: replicator
+      REPLICATION_PASSWORD: replicator_pass
+    command: >
+      postgres
+      -c wal_level=replica
+      -c max_wal_senders=10
+      -c max_replication_slots=10
+      -c hot_standby=on
+    ports:
+      - "5433:5432"
+    volumes:
+      - pokedex_postgres_writer_data:/var/lib/postgresql
+      - ./docker/postgres/writer/init:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d pokedex_development"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+
+  pokedex-postgres-reader:
+    image: postgres:18
+    container_name: pokedex-postgres-reader
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: pokedex_development
+      REPLICATION_USER: replicator
+      REPLICATION_PASSWORD: replicator_pass
+    depends_on:
+      pokedex-postgres-writer:
+        condition: service_healthy
+    entrypoint: ["/bin/sh", "/docker/postgres/reader/bootstrap-replica.sh"]
+    ports:
+      - "5434:5432"
+    volumes:
+      - pokedex_postgres_reader_data:/var/lib/postgresql
+      - ./docker/postgres/reader:/docker/postgres/reader:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d pokedex_development"]
+      start_period: 120s
+      interval: 10s
+      timeout: 5s
+      retries: 30
+
+volumes:
+  bundle_cache:
+    name: pokedex_bundle_cache
+  pokedex_postgres_writer_data:
+    name: pokedex_postgres_writer_data
+  pokedex_postgres_reader_data:
+    name: pokedex_postgres_reader_data
+  metabase_data:
+    name: pokedex_metabase_data
+  metabase_postgres_data:
+    name: pokedex_metabase_postgres_data
