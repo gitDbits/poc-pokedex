@@ -3,7 +3,7 @@ namespace :metabase do
   task seed_pokedex: :environment do
     env = {
       "METABASE_URL" => ENV.fetch("METABASE_URL", "http://localhost:3002"),
-      "METABASE_EMAIL" => ENV.fetch("METABASE_EMAIL", "gea@sepog.ro.gov.br"),
+      "METABASE_EMAIL" => ENV.fetch("METABASE_EMAIL", "gea@example.com"),
       "METABASE_PASSWORD" => ENV.fetch("METABASE_PASSWORD", "Gea#1234"),
       "METABASE_DB_NAME" => ENV.fetch("METABASE_DB_NAME", "Pokedex Reader"),
       "METABASE_DB_HOST" => ENV.fetch("METABASE_DB_HOST", "pokedex-postgres-reader"),

@@ -1,5 +1,10 @@
 # POC Sepog Pokedex
 
+![Tela inicial](docs/screen_home)
+![Index de pokemons](docs/index_pokemons)
+![Batalha de pokemon](docs/battle_pokemon)
+![Dashboard no Metabase](docs/screen_dashboad_metabase)
+
 Análise para a nova estrutura da Gea Sepog:
 
 1. Estruturar o ambiente via Docker Compose com Ruby/Rails, Redis, Sidekiq e Metabase App.
@@ -81,7 +86,7 @@ docker compose ps
 
 - Acesse `http://localhost:3002`
 - Finalize o onboarding (criação do usuário admin) com:
-- E-mail: `gea@sepog.ro.gov.br`
+- E-mail: `gea@example.com`
 - Senha: `Gea#1234`
 
 ### 2. Criar conexão com a réplica (Reader)
@@ -113,6 +118,8 @@ Observação:
 - `localhost:5434` é para acesso direto da máquina host (ex.: pgAdmin), não para a conexão interna do Metabase.
 
 ### 3. Executar a seed via rake
+
+Observação: o arquivo CSV de Pokémons está disponível em `lib/csv`.
 
 Com a conexão criada, execute:
 
@@ -339,23 +346,3 @@ from pg_stat_progress_basebackup;
 ```
 
 Essa visão mostra o progresso do `pg_basebackup` enquanto a réplica está em bootstrap.
-
-## Comandos Úteis
-
-Parar stack:
-
-```bash
-docker compose stop
-```
-
-Parar e remover containers/rede (mantendo volumes):
-
-```bash
-docker compose down
-```
-
-Parar e remover tudo, incluindo dados:
-
-```bash
-docker compose down -v --remove-orphans
-```
