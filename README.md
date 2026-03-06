@@ -1,4 +1,4 @@
-# POC Sepog Pokedex
+# Pokedex Gea
 
 ![Tela inicial](docs/screen_home)
 ![Index de pokemons](docs/index_pokemons)
